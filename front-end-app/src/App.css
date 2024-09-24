@@ -1,0 +1,14 @@
+#root {
+  margin: 1.5rem 10rem;
+}
+
+th, tr, td {
+  padding: 0.4rem;
+  border: 1.5px solid white;
+  
+  @apply border-gray-300;
+}
+
+th, td {
+  @apply text-sm
+}
