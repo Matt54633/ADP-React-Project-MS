@@ -23,7 +23,7 @@ describe('Search Component Tests', () => {
         expect(searchIcon).toBeInTheDocument();
     });
 
-    it("allows typing in the search input", () => {
+    it("Allows typing in the search input", () => {
         const handleSearchChange = jest.fn();
 
         render(

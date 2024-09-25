@@ -8,7 +8,7 @@ const CustomerList = (props) => {
     const end = Math.min(start + itemsPerPage - 1, props.count);
 
     const displayAlert = () => {
-        if (props.selectedCustomer.id == -1) {
+        if (props.selectedCustomer.name == "") {
             window.alert('Please select a customer first!')
         }
     }

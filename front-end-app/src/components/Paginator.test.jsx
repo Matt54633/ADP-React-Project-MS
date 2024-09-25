@@ -8,7 +8,7 @@ describe('Paginator Component Tests', () => {
 
     it("Paginator is Rendered Correctly", () => {
         render(
-            <Paginator /> 
+            <Paginator />
         );
 
         const backButton = screen.getByTestId('backButton')
@@ -32,8 +32,8 @@ describe('Paginator Component Tests', () => {
         const backButton = screen.getByTestId('backButton')
         expect(backButton).toBeInTheDocument();
         act(() => {
-        userEvent.click(backButton);
-        }); 
+            userEvent.click(backButton);
+        });
         expect(handlePageChange).not.toHaveBeenCalled();
 
     });
@@ -48,9 +48,30 @@ describe('Paginator Component Tests', () => {
         const nextButton = screen.getByTestId('nextButton')
         expect(nextButton).toBeInTheDocument();
         act(() => {
-        userEvent.click(nextButton);
+            userEvent.click(nextButton);
         });
         expect(handlePageChange).toHaveBeenCalled();
 
     });
+});
+
+it("Paginator prevents navigating to page beyond customer count", () => {
+    const handlePageChange = jest.fn();
+    const itemsPerPage = 15;
+
+    render(
+        <Paginator page={2} count={30} handlePageChange={handlePageChange} />
+    );
+
+    const nextButton = screen.getByTestId('nextButton');
+    expect(nextButton).toBeInTheDocument();
+
+    const totalPages = Math.ceil(30 / itemsPerPage);
+
+    if (totalPages === 2) {
+        act(() => {
+            userEvent.click(nextButton);
+        });
+        expect(handlePageChange).not.toHaveBeenCalled();
+    }
 });

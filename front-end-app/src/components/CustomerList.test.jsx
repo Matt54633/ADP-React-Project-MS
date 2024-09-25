@@ -19,7 +19,7 @@ describe('Customer List Component Tests', () => {
         handleSearchChange: jest.fn(),
         handlePageChange: jest.fn(),
         handleSelectCustomer: jest.fn(),
-        selectedCustomer: { id: -1 },
+        selectedCustomer: { "id": -1, "name": "", "email": "", "password": "" } ,
         clearSelectedCustomer: jest.fn(),
     };
 
@@ -70,6 +70,39 @@ describe('Customer List Component Tests', () => {
         userEvent.click(customerRow);
         });
         expect(mockProps.handleSelectCustomer).toHaveBeenCalledWith(mockCustomers[0]);
+    });
+
+    it("Navigates to /form when clicking the Add Button", () => {
+        render(
+            <BrowserRouter>
+                <CustomerList {...mockProps} />
+            </BrowserRouter>
+        );
+
+        const addButton = screen.getByText('Add');
+        expect(addButton).toBeInTheDocument();
+
+        userEvent.click(addButton);
+        expect(window.location.pathname).toBe('/form');
+    });
+
+    it("Navigates to /form when clicking the Update Button when a user is selected", () => {
+        render(
+            <BrowserRouter>
+                <CustomerList {...mockProps} />
+            </BrowserRouter>
+        );
+
+        const customerRow = screen.getByText('John Doe');
+        const updateButton = screen.getByText('Update');
+        expect(updateButton).toBeInTheDocument();
+
+        act(() => {
+            userEvent.click(customerRow);
+            userEvent.click(updateButton);
+        });
+
+        expect(window.location.pathname).toBe('/form');
     });
 
 });
