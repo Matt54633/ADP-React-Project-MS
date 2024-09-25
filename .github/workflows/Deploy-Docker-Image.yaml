@@ -29,7 +29,7 @@ jobs:
         id: meta_frontend
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/matt54633/ADP-React-Project-MS
+          images: ${{ env.REGISTRY }}/Matt54633/ADP-React-Project-MS
           tags: |
             type=ref,event=branch
             type=ref,event=pr
