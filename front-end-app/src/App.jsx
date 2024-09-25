@@ -50,26 +50,26 @@ function App() {
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
-    setSearchText(value)
+    setSearchText(value);
 
     // set page to 1 to collapse search results when typing in search field
     setPage(1)
   };
 
   const handleCancel = () => {
-    setSelectedCustomer(blankCustomer)
+    setSelectedCustomer(blankCustomer);
   }
 
   const handleDelete = () => {
-    deleteById(selectedCustomer.id, callback)
-    setSelectedCustomer(blankCustomer)
+    deleteById(selectedCustomer.id, callback);
+    setSelectedCustomer(blankCustomer);
   }
 
   const handleSave = () => {
     if (mode === 'Add') {
-      post(selectedCustomer, callback)
+      post(selectedCustomer, callback);
     } else {
-      put(selectedCustomer, callback)
+      put(selectedCustomer, callback);
     }
   }
 
