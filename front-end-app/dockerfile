@@ -1,0 +1,15 @@
+FROM node:18-alpine as build
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm install -g concurrently
+
+EXPOSE 5173 4000
+
+CMD ["npm", "run", "app"]
