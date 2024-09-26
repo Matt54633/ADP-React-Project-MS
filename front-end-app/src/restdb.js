@@ -1,6 +1,6 @@
 const baseURL = 'http://localhost:4000/customers';
 
-export async function getAll(page, setCustomers, searchText) {
+export async function getAll(page, setCustomers, searchText, sortDirection) {
     const myInit = {
         method: 'GET',
         mode: 'cors'
@@ -13,6 +13,19 @@ export async function getAll(page, setCustomers, searchText) {
                 throw new Error(`Error fetching data: ${response.status}`);
             }
             const data = await response.json();
+
+            if (sortDirection) {
+                data.sort((a, b) => {
+                    const nameA = a.name.toLowerCase();
+                    const nameB = b.name.toLowerCase();
+                    if (sortDirection === 'A-Z') {
+                        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+                    } else {
+                        return nameA > nameB ? -1 : nameA < nameB ? 1 : 0;
+                    }
+                });
+            }
+
             setCustomers(data);
         } catch (error) {
             alert(error);
@@ -23,7 +36,8 @@ export async function getAll(page, setCustomers, searchText) {
     const offset = (page - 1) * limit;
 
     const searchParam = searchText ? `&q=${encodeURIComponent(searchText)}` : '';
-    const url = `${baseURL}?_limit=${limit}&_start=${offset}${searchParam}`;
+    const sortParam = sortDirection ? `&_sort=name&_order=${sortDirection === 'A-Z' ? 'asc' : 'desc'}` : '';
+    const url = `${baseURL}?_limit=${limit}&_start=${offset}${searchParam}${sortParam}`;
 
     fetchData(url);
 }

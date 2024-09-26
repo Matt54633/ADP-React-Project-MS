@@ -1,6 +1,7 @@
 import Paginator from "./Paginator";
 import Search from "./Search";
 import { Link } from "react-router-dom";
+import SortSelect from "./SortSelect";
 
 const CustomerList = (props) => {
     const itemsPerPage = 15;
@@ -18,7 +19,11 @@ const CustomerList = (props) => {
             <div className="flex justify-between gap-4 items-center">
                 <h1 className="text-xl font-bold text-slate-700">Customer List</h1>
                 <Search search={props.search} handleSearchChange={props.handleSearchChange} />
-                <Paginator page={props.page} count={props.count} handlePageChange={props.handlePageChange} />
+
+                <div className="flex gap-4 items-center">
+                    <SortSelect handleSortDirectionChange={props.handleSortDirectionChange} />
+                    <Paginator page={props.page} count={props.count} handlePageChange={props.handlePageChange} />
+                </div>
             </div>
 
             <table className="text-center border shadow-md">

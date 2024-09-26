@@ -12,14 +12,15 @@ function App() {
   const [selectedCustomer, setSelectedCustomer] = useState(blankCustomer);
   const [searchText, setSearchText] = useState('');
   const [count, setCount] = useState(0);
+  const [sortDirection, setSortDirection] = useState('A-Z');
   let mode = (selectedCustomer.id >= 0) ? 'Update' : 'Add';
 
   let callback = () => { setSelectedCustomer(blankCustomer); }
 
-  useEffect(() => { getCustomers() }, [selectedCustomer, page, searchText]);
+  useEffect(() => { getCustomers() }, [selectedCustomer, page, searchText, sortDirection]);
 
   const getCustomers = () => {
-    getAll(page, setCustomers, searchText);
+    getAll(page, setCustomers, searchText, sortDirection);
     getCount(setCount);
   }
 
@@ -39,6 +40,10 @@ function App() {
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
+
+  const handleSortDirectionChange = (newDirection) => {
+    setSortDirection(newDirection);
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +80,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={<CustomerList search={searchText} count={count} clearSelectedCustomer={clearSelectedCustomer} handleSearchChange={handleSearchChange} page={page} handlePageChange={handlePageChange} customers={customers} selectedCustomer={selectedCustomer} handleSelectCustomer={handleSelectCustomer} />} />
+      <Route path='/' element={<CustomerList search={searchText} handleSortDirectionChange={handleSortDirectionChange} count={count} clearSelectedCustomer={clearSelectedCustomer} handleSearchChange={handleSearchChange} page={page} handlePageChange={handlePageChange} customers={customers} selectedCustomer={selectedCustomer} handleSelectCustomer={handleSelectCustomer} />} />
       <Route path='/form' element={<CustomerAddUpdateForm mode={mode} selectedCustomer={selectedCustomer} handleInputChange={handleInputChange} handleSelectCustomer={handleSelectCustomer} handleDelete={handleDelete} handleSave={handleSave} handleCancel={handleCancel} />} />
     </Routes>
   )
