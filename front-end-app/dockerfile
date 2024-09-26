@@ -4,13 +4,11 @@ LABEL org.opencontainers.image.source="https://github.com/Matt54633/ADP-React-Pr
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm install
+RUN npm install && npm cache clean --force
 
 COPY . .
 
-RUN npm install -g concurrently
+EXPOSE 4000
+EXPOSE 5173
 
-EXPOSE 5173 4000
-
-CMD ["npm", "run", "app"]
+CMD npm run start & npm run dev
