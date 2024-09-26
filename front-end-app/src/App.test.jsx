@@ -13,7 +13,7 @@ describe('App Component Tests', () => {
             </BrowserRouter>
         )
 
-        const app = screen.getByTestId('customerList');
+        const app = screen.getByText('Customer Portal');
         expect(app).toBeInTheDocument();
     });
 });
