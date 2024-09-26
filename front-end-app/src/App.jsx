@@ -4,6 +4,9 @@ import { Route, Routes } from 'react-router-dom'
 import CustomerList from './components/CustomerList'
 import { getAll, put, post, deleteById, getCount } from './restdb'
 import CustomerAddUpdateForm from './components/CustomerAddUpdateForm';
+import { AuthProvider } from './hooks/AuthContext';
+import RequireAuth from './components/RequireAuth';
+import Login from './components/Login';
 
 function App() {
   let blankCustomer = { "id": -1, "name": "", "email": "", "password": "" };
@@ -79,10 +82,20 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path='/' element={<CustomerList search={searchText} handleSortDirectionChange={handleSortDirectionChange} count={count} clearSelectedCustomer={clearSelectedCustomer} handleSearchChange={handleSearchChange} page={page} handlePageChange={handlePageChange} customers={customers} selectedCustomer={selectedCustomer} handleSelectCustomer={handleSelectCustomer} />} />
-      <Route path='/form' element={<CustomerAddUpdateForm mode={mode} selectedCustomer={selectedCustomer} handleInputChange={handleInputChange} handleSelectCustomer={handleSelectCustomer} handleDelete={handleDelete} handleSave={handleSave} handleCancel={handleCancel} />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={
+          <RequireAuth>
+            <CustomerList search={searchText} handleSortDirectionChange={handleSortDirectionChange} count={count} clearSelectedCustomer={clearSelectedCustomer} handleSearchChange={handleSearchChange} page={page} handlePageChange={handlePageChange} customers={customers} selectedCustomer={selectedCustomer} handleSelectCustomer={handleSelectCustomer} />
+          </RequireAuth>
+        } />
+        <Route path="/form" element={
+          <RequireAuth>
+            <CustomerAddUpdateForm mode={mode} selectedCustomer={selectedCustomer} handleInputChange={handleInputChange} handleSelectCustomer={handleSelectCustomer} handleDelete={handleDelete} handleSave={handleSave} handleCancel={handleCancel} />          </RequireAuth>
+        } />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </AuthProvider>
   )
 }
 
