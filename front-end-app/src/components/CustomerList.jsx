@@ -35,14 +35,23 @@ const CustomerList = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.customers.map(customer => (
-                        <tr onClick={() => props.handleSelectCustomer(customer)} key={customer.id} className={`cursor-pointer hover:underline text-slate-700 ${customer.id === props.selectedCustomer.id ? 'font-bold bg-slate-200' : 'font-regular'}`}>
-                            <td>{customer.name}</td>
-                            <td>{customer.email}</td>
-                            <td>{customer.password}</td>
+                    {props.customers.length === 0 ? (
+                        <tr>
+                            <td colSpan={3} className="text-center text-xs text-slate-700">
+                                No Customers Found
+                            </td>
                         </tr>
-                    ))}
+                    ) : (
+                        props.customers.map(customer => (
+                            <tr onClick={() => props.handleSelectCustomer(customer)} key={customer.id} className={`cursor-pointer hover:underline text-slate-700 ${customer.id === props.selectedCustomer.id ? 'font-bold bg-slate-200' : 'font-regular'}`}>
+                                <td className="text-xs">{customer.name}</td>
+                                <td className="text-xs">{customer.email}</td>
+                                <td className="text-xs">{customer.password}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
+
             </table>
 
             <div className="flex gap-5 items-center mt-2">
