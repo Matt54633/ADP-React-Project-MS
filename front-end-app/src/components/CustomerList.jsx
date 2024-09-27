@@ -2,11 +2,16 @@ import Paginator from "./Paginator";
 import Search from "./Search";
 import { Link } from "react-router-dom";
 import SortSelect from "./SortSelect";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const CustomerList = (props) => {
+    const navigate = useNavigate();
     const itemsPerPage = 15;
     const start = (props.page - 1) * itemsPerPage + 1;
     const end = Math.min(start + itemsPerPage - 1, props.count);
+    const [lastClickTime, setLastClickTime] = useState(0);
+    const doubleClickThreshold = 250;
 
     const displayAlert = () => {
         if (props.selectedCustomer.name == "") {
@@ -14,15 +19,39 @@ const CustomerList = (props) => {
         }
     }
 
+    // allow user to double click a row to go straight to the form page
+    const handleRowClick = (e, customer) => {
+        const currentTime = new Date().getTime();
+
+        if (currentTime - lastClickTime < doubleClickThreshold) {
+            if (props.selectedCustomer.id != -1) {
+                navigate('/form');
+            }
+        } else {
+            props.handleSelectCustomer(customer);
+        }
+
+        setLastClickTime(currentTime);
+    };
+
     return (
         <div data-testid="customerList" className="flex flex-col gap-4 py-5 w-full">
             <div className="flex justify-between gap-4 items-center">
                 <h1 className="text-xl font-bold text-slate-700">Customer List</h1>
                 <Search search={props.search} handleSearchChange={props.handleSearchChange} />
 
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-2 items-center">
                     <SortSelect handleSortDirectionChange={props.handleSortDirectionChange} />
-                    <Paginator page={props.page} count={props.count} handlePageChange={props.handlePageChange} />
+                    {props.selectedCustomer.id === -1 ? (
+                        <span onClick={displayAlert} className="flex cursor-default items-center text-gray-300 bg-slate-400 ring-1 ring-slate-300 shadow-md transition-colors text-xs px-4 h-8 rounded-lg">
+                            Update
+                        </span>
+                    ) : (
+                        <Link to={'/form'} className="flex items-center bg-blue-400 ring-1 ring-blue-300 shadow-md transition-colors hover:bg-blue-500 text-xs px-4 h-8 rounded-lg">
+                            Update
+                        </Link>
+                    )}
+                    <Link to={'/form'} onClick={props.clearSelectedCustomer} className="flex items-center bg-blue-400 ring-1 ring-blue-300 shadow-md transition-colors hover:bg-blue-500 text-xs px-4 h-8 rounded-lg">Add</Link>
                 </div>
             </div>
 
@@ -43,10 +72,11 @@ const CustomerList = (props) => {
                         </tr>
                     ) : (
                         props.customers.map(customer => (
-                            <tr onClick={() => props.handleSelectCustomer(customer)} key={customer.id} className={`cursor-pointer hover:underline text-slate-700 ${customer.id === props.selectedCustomer.id ? 'font-bold bg-slate-200' : 'font-regular'}`}>
+                            <tr key={customer.id} onClick={(e) => handleRowClick(e, customer)} className={`cursor-pointer hover:underline text-slate-700 ${customer.id === props.selectedCustomer.id ? 'font-bold bg-slate-200' : 'font-regular'}`}>
                                 <td className="text-xs">{customer.name}</td>
                                 <td className="text-xs">{customer.email}</td>
                                 <td className="text-xs">{customer.password}</td>
+
                             </tr>
                         ))
                     )}
@@ -63,18 +93,9 @@ const CustomerList = (props) => {
             </div>
 
             <div className="flex gap-2 justify-center">
-                {props.selectedCustomer.id === -1 ? (
-                    <span onClick={displayAlert} className="flex cursor-default items-center text-slate-700 bg-slate-400 ring-1 ring-slate-300 shadow-md transition-colors text-xs px-4 h-8 rounded-lg">
-                        Update
-                    </span>
-                ) : (
-                    <Link to={'/form'} className="flex items-center bg-blue-400 ring-1 ring-blue-300 shadow-md transition-colors hover:bg-blue-500 text-xs px-4 h-8 rounded-lg">
-                        Update
-                    </Link>
-                )}
-                <Link to={'/form'} onClick={props.clearSelectedCustomer} className="flex items-center bg-blue-400 ring-1 ring-blue-300 shadow-md transition-colors hover:bg-blue-500 text-xs px-4 h-8 rounded-lg">Add</Link>
+                <Paginator page={props.page} count={props.count} handlePageChange={props.handlePageChange} />
             </div>
-        </div>
+        </div >
     );
 }
 
