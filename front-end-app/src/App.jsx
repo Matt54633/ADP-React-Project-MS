@@ -91,7 +91,8 @@ function App() {
         } />
         <Route path="/form" element={
           <RequireAuth>
-            <CustomerAddUpdateForm mode={mode} selectedCustomer={selectedCustomer} handleInputChange={handleInputChange} handleSelectCustomer={handleSelectCustomer} handleDelete={handleDelete} handleSave={handleSave} handleCancel={handleCancel} />          </RequireAuth>
+              <CustomerAddUpdateForm mode={mode} selectedCustomer={selectedCustomer} handleInputChange={handleInputChange} handleSelectCustomer={handleSelectCustomer} handleDelete={handleDelete} handleSave={handleSave} handleCancel={handleCancel} />
+          </RequireAuth>
         } />
         <Route path="/login" element={<Login />} />
       </Routes>

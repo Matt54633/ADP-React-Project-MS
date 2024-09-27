@@ -15,7 +15,7 @@ const CustomerList = (props) => {
     }
 
     return (
-        <div data-testid="customerList" className="flex flex-col gap-4 w-full">
+        <div data-testid="customerList" className="flex flex-col gap-4 py-5 w-full">
             <div className="flex justify-between gap-4 items-center">
                 <h1 className="text-xl font-bold text-slate-700">Customer List</h1>
                 <Search search={props.search} handleSearchChange={props.handleSearchChange} />
